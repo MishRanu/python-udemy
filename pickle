@@ -1,0 +1,58 @@
+#no information about the object to be stored can be tough as we saw previously
+# so we have an alternate easier way to do things
+
+import pickle
+
+imelda = {"More Mayhem",
+          "Imelda May",
+          2011,
+          ((1, "Pulling the Rug"),
+           (2, "Psycho"),
+           (3, "Kentish Town Waltz"))}
+even = list(range(0, 10,2))
+odd = list(range(1,10, 2))
+
+
+with open("imelda.pickle", "wb") as pickle_file:
+    pickle.dump(imelda, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(even, pickle_file, protocol=0)
+    pickle.dump(odd, pickle_file, protocol=pickle.DEFAULT_PROTOCOL)
+    pickle.dump(2998302, pickle_file, protocol=pickle.DEFAULT_PROTOCOL)
+
+
+with open("imelda.pickle", "rb") as pickle_filed:
+    imelda2 = pickle.load(pickle_filed)
+    even_list = pickle.load(pickle_filed)
+    odd_list = pickle.load(pickle_filed)
+    x = pickle.load(pickle_filed)
+
+album, artist, year, track_list = imelda2
+print(album)
+print(artist)
+print(year)
+for track in track_list:
+    track_number, track_title = track
+    print(track_number, track_title)
+
+print("="*50)
+
+for i in even_list:
+    print(i)
+
+print("="*50)
+
+for i in odd_list:
+    print(i)
+
+print("="*50)
+
+print(x)
+#files must be written in the same order in which they were written
+#there might be very few objects that cannot be wirrten by pickle
+#there are some protocols: 5 of them for storing the data
+#the original pickle protocol and python 3 pickle protocols are not backward compatiable
+#python 2 introduced protocol 2, and python 3 uses protocol 3
+#python 2 will not be able to unpickle data pickled by python 3
+
+#pickling should not be used for unpickling data from internet and unsafe sources
+#this could cause havoc in many cases
